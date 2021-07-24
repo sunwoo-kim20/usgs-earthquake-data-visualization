@@ -32,8 +32,9 @@ function createMap(startingCoords, mapZoomLevel, earthquakes) {
   });
 
   var baseMaps = {
-    Street: streetmap,
-    Dark: darkmap
+    Satellite: satellitemap,
+    Dark: darkmap,
+    Outdoors: outdoormap
   };
   // Create an overlayMaps object to hold the bikeStations layer
   overlayMaps = {
@@ -41,7 +42,7 @@ function createMap(startingCoords, mapZoomLevel, earthquakes) {
   };
 
   // Create the map object with options
-  var myMap = L.map("map-id", {
+  var myMap = L.map("map", {
     center: newYorkCoords,
     zoom: mapZoomLevel,
     layer: [streetmap, bikeStations]
