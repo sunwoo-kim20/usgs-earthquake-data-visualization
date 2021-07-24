@@ -56,23 +56,17 @@ function createMap(startingCoords, mapZoomLevel, earthquakes) {
 
 // Create the createMarkers function
 function createMarkers(response) {
-  // Pull the "stations" property off of response.data
-  var stations = response.data.stations;
-  console.log(response);
-  // Initialize an array to hold bike markers
-  var bikeMarkers = [];
-  // Loop through the stations array
-    // For each station, create a marker and bind a popup with the station's name
-  stations.forEach(function(bike) {
-    bikeMarkers.push(
-      L.marker([bike.lat, bike.lon]).bindPopup(bike.station_id)
-    );
-  });
-    // Add the marker to the bikeMarkers array
+  // Pull the "features" property from response
+  var quakes = response.features;
 
-  // Create a layer group made from the bike markers array, pass it into the createMap function
-  var bikeStations = L.layerGroup(bikeMarkers);
-  return bikeStations;
+  // Initialize an array to hold the earthquake data
+  var earthquakes = [];
+
+  // Loop through the earthquakes array
+    // For each station, create a marker and bind a popup with the station's name
+  quakes.forEach(function(quake) {
+    earthquakes.push(
+
 }
 
 
