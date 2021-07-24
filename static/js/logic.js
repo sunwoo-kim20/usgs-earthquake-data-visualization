@@ -48,7 +48,7 @@ function createMap(startingCoords, mapZoomLevel, earthquakes) {
     layer: [satellitemap, earthquake]
   });
 
-  // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
+  // Create layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
   L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 }
 
