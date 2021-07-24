@@ -52,6 +52,7 @@ function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
   L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 }
 
+// Create function to select color for circles
 
 
 // Create the createCircles function
@@ -65,10 +66,16 @@ function createCircles(response) {
   // Loop through the earthquakes array
     // For each earthquake, create a circle and bind a popup with additional info
   quakes.forEach(function(quake) {
+    var quakeInfo = `Location: ${quake.properties.place} <hr>
+      Magnitude: ${quake.properties.mag} <br>
+      Epicenter Depth: ${quake.geometry.coordinates[2]}`;
     earthquakeCircles.push(
-      L.marker([quake.geometry.coordinates[1], quake.geometry.coordinates[0]], {
-        
-      }).bindPopup()
+      L.circle([quake.geometry.coordinates[1], quake.geometry.coordinates[0]], {
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.7,
+        radius:
+      }).bindPopup(quakeInfo)
     );
   });
 
