@@ -45,11 +45,42 @@ function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
   var myMap = L.map("map", {
     center: startingCoords,
     zoom: mapZoomLevel,
-    layer: [satellitemap, earthquakeInstances]
+    layers: [satellitemap, earthquakeInstances]
   });
 
   // Create layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
   L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+
+  // Legend set up
+  var legend = L.control({ position: "bottomright" });
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "info legend");
+    var limits = ["-10-10", "10-30", "30-50", "50-70", "70-90", "90+"];
+    var colors = ["#ccffcc", "#ccff99", "#ffff99", "#ffdb4d", "#e68a00","#cc0000"];
+    var labels = [];
+
+    // Add levels
+    var legendInfo = "<h1>Epicenter Depth</h1>" +
+      "<div class=\"labels\">"
+    // for (var i = 0; i < limits.length; i++) {
+    //   legendInfo += "<div>" + limits[i] + "</div>";
+    // }
+
+    div.innerHTML = legendInfo;
+
+    limits.forEach(function(limit, index) {
+      labels.push("<li style=\"background-color: " + colors[index] + "\">" + limit + "</li>");
+    });
+    for (var i = 0; i < limits.length; i++) {
+      div.innerHTML += "<ul>" + labels[i] + "</ul>";
+    }
+
+    return div;
+  };
+
+  // Adding legend to the map
+  legend.addTo(myMap);
+
 }
 
 // Create function to select color for circles
