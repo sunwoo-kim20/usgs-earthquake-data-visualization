@@ -36,16 +36,16 @@ function createMap(startingCoords, mapZoomLevel, earthquakes) {
     Dark: darkmap,
     Outdoors: outdoormap
   };
-  // Create an overlayMaps object to hold the bikeStations layer
+  // Create an overlayMaps object to hold the earthquakes layer
   overlayMaps = {
-    Earthquakes: earthquake
+    Earthquakes: earthquakes
   };
 
   // Create the map object with options
   var myMap = L.map("map", {
-    center: newYorkCoords,
+    center: startingCoords,
     zoom: mapZoomLevel,
-    layer: [streetmap, bikeStations]
+    layer: [satellitemap, earthquake]
   });
 
   // Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
