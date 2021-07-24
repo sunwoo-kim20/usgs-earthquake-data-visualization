@@ -1,6 +1,6 @@
 // Coordinates for original map view
 var startingCoords = [37.09, -95.71];
-var mapZoomLevel = 3;
+var mapZoomLevel = 5;
 
 // Create the createMap function
 function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
@@ -23,18 +23,18 @@ function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
     accessToken: API_KEY
   });
 
-  // Create a baseMaps object to hold the outdoormap layer
-  var outdoormap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+  // Create a baseMaps object to hold the lightmap layer
+  var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
-    id: "outdoors-v11",
+    id: "light-v10",
     accessToken: API_KEY
   });
 
   var baseMaps = {
     Satellite: satellitemap,
     Dark: darkmap,
-    Outdoors: outdoormap
+    Street: streetmap
   };
   // Create an overlayMaps object to hold the earthquakes layer
   overlayMaps = {
@@ -57,20 +57,23 @@ function chooseColor(depth) {
   // Initialize color variable
   var color = "";
   // Assign color by epicenter depth
-  if (depth < 15) {
+  if (depth < 10) {
     color = "#ccffcc";
   }
-  else if (depth < 40) {
-    color = "green";
+  else if (depth < 30) {
+    color = "#ccff99";
   }
-  else if (depth < 65) {
-    color = "yellow";
+  else if (depth < 50) {
+    color = "#ffff99";
   }
-  else if (depth < 80) {
-    color = "orange";
+  else if (depth < 70) {
+    color = "#ffdb4d";
+  }
+  else if (depth < 90) {
+    color = "#e68a00"
   }
   else {
-    color = "red"
+    color = "#cc0000"
   }
   return color;
 }
@@ -91,10 +94,10 @@ function createCircles(response) {
       Epicenter Depth: ${quake.geometry.coordinates[2]}`;
     earthquakeCircles.push(
       L.circle([quake.geometry.coordinates[1], quake.geometry.coordinates[0]], {
-        color: "black",
+        color: chooseColor(quake.geometry.coordinates[2]),
         fillColor: chooseColor(quake.geometry.coordinates[2]),
-        fillOpacity: 0.7,
-        radius: 7 ** quake.properties.mag
+        fillOpacity: 0.5,
+        radius: quake.properties.mag ** 5
       }).bindPopup(quakeInfo)
     );
   });
