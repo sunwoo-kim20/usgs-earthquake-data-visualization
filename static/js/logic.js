@@ -11,7 +11,7 @@ function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
     tileSize: 512,
     maxZoom: 18,
     zoomOffset: -1,
-    id: "satellite-v9",
+    id: "mapbox/satellite-v9",
     accessToken: API_KEY
   });
 
@@ -38,14 +38,14 @@ function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
   };
   // Create an overlayMaps object to hold the earthquakes layer
   overlayMaps = {
-    Earthquakes: earthquakes
+    Earthquakes: earthquakeInstances
   };
 
   // Create the map object with options
   var myMap = L.map("map", {
     center: startingCoords,
     zoom: mapZoomLevel,
-    layer: [satellitemap, earthquake]
+    layer: [satellitemap, earthquakeInstances]
   });
 
   // Create layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
@@ -58,16 +58,16 @@ function chooseColor(depth) {
   var color = "";
   // Assign color by epicenter depth
   if (depth < 15) {
-    color = "green";
+    color = "#ccffcc";
   }
   else if (depth < 40) {
-    color = "yellow";
+    color = "green";
   }
   else if (depth < 65) {
-    color = "orange";
+    color = "yellow";
   }
   else if (depth < 80) {
-    color = "blue";
+    color = "orange";
   }
   else {
     color = "red"
@@ -91,10 +91,10 @@ function createCircles(response) {
       Epicenter Depth: ${quake.geometry.coordinates[2]}`;
     earthquakeCircles.push(
       L.circle([quake.geometry.coordinates[1], quake.geometry.coordinates[0]], {
-        color: color,
-        fillColor: color,
+        color: "black",
+        fillColor: chooseColor(quake.geometry.coordinates[2]),
         fillOpacity: 0.7,
-        radius: quake.properties.mag
+        radius: 7 ** quake.properties.mag
       }).bindPopup(quakeInfo)
     );
   });
@@ -110,9 +110,5 @@ function createCircles(response) {
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(response) {
   // createMap(newYorkCoords, mapZoomLevel,createMarkers(response));
   console.log(response);
-  console.log(`Lon:${response.features[0].geometry.coordinates[0]}`);
-  console.log(`Lat:${response.features[0].geometry.coordinates[1]}`);
-  console.log(`epicenter depth:${response.features[0].geometry.coordinates[2]}`);
-  console.log(`Magnitude:${response.features[0].properties.mag}`);
-  console.log(`Place:${response.features[0].properties.place}`);
+  createMap(startingCoords, mapZoomLevel, createCircles(response));
 });
