@@ -34,7 +34,7 @@ function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
   var baseMaps = {
     Satellite: satellitemap,
     Dark: darkmap,
-    Street: streetmap
+    Light: lightmap
   };
   // Create an overlayMaps object to hold the earthquakes layer
   overlayMaps = {
@@ -97,7 +97,7 @@ function createCircles(response) {
         color: chooseColor(quake.geometry.coordinates[2]),
         fillColor: chooseColor(quake.geometry.coordinates[2]),
         fillOpacity: 0.5,
-        radius: quake.properties.mag ** 5
+        radius: quake.properties.mag * 10000
       }).bindPopup(quakeInfo)
     );
   });
