@@ -3,7 +3,7 @@ var startingCoords = [37.09, -95.71];
 var mapZoomLevel = 3;
 
 // Create the createMap function
-function createMap(startingCoords, mapZoomLevel, earthquakes) {
+function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
 
   // Create a baseMaps object to hold the satellite layer
   var satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -54,19 +54,27 @@ function createMap(startingCoords, mapZoomLevel, earthquakes) {
 
 
 
-// Create the createMarkers function
-function createMarkers(response) {
+// Create the createCircles function
+function createCircles(response) {
   // Pull the "features" property from response
   var quakes = response.features;
 
   // Initialize an array to hold the earthquake data
-  var earthquakes = [];
+  var earthquakeCircles = [];
 
   // Loop through the earthquakes array
-    // For each station, create a marker and bind a popup with the station's name
+    // For each earthquake, create a circle and bind a popup with additional info
   quakes.forEach(function(quake) {
-    earthquakes.push(
+    earthquakeCircles.push(
+      L.marker([quake.geometry.coordinates[1], quake.geometry.coordinates[0]], {
+        
+      }).bindPopup()
+    );
+  });
 
+  // Create a layer group with the earthquake circles and output as function return
+  var earthquakeInstances = L.layerGroup(earthquakeCircles);
+  return earthquakeInstances;
 }
 
 
