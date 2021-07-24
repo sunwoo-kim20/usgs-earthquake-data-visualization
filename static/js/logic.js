@@ -53,7 +53,27 @@ function createMap(startingCoords, mapZoomLevel, earthquakeInstances) {
 }
 
 // Create function to select color for circles
-
+function chooseColor(depth) {
+  // Initialize color variable
+  var color = "";
+  // Assign color by epicenter depth
+  if (depth < 15) {
+    color = "green";
+  }
+  else if (depth < 40) {
+    color = "yellow";
+  }
+  else if (depth < 65) {
+    color = "orange";
+  }
+  else if (depth < 80) {
+    color = "blue";
+  }
+  else {
+    color = "red"
+  }
+  return color;
+}
 
 // Create the createCircles function
 function createCircles(response) {
@@ -74,7 +94,7 @@ function createCircles(response) {
         color: color,
         fillColor: color,
         fillOpacity: 0.7,
-        radius:
+        radius: quake.properties.mag
       }).bindPopup(quakeInfo)
     );
   });
